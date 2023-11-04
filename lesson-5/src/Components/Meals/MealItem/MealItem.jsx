@@ -4,7 +4,12 @@ const MealItem = (props) => {
 
   const setCartHandler = (data) => {
 
-    props.setCart({description: props.description, id: props.id, price: props.price, amount: data, name: props.name});
+    props.setCart({
+      description: props.description,
+      id: props.id,
+      price: props.price,
+      amount: Number(data),
+      name: props.name});
   }
 
   return (

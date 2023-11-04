@@ -3,17 +3,20 @@ import Modal from "../../UI/Modal";
 import CartItem from "./CartItem";
 
 const Cart = (props) => {
-  console.log(props);
+
+  const  cartTotalAMount = props.cart.reduce((sum, item) => sum+=(Number(item.price)* Number(item.amount)), 0).toFixed(2);
   const cartItem = (
     <ul className={classes['cart--items']}>
       {props.cart.map((item) => (
       <CartItem
         key={item.id}
+        id={item.id}
         name={item.name}
         amount={item.amount}
+        description={item.description}
         price={item.price}
-        onRemove={() =>console.log('remove')}
-        onAdd={() => console.log('add')}
+        onRemove={props.onRemove}
+        setCart={props.setCart}
       />
       ))}
     </ul>
@@ -23,7 +26,7 @@ const Cart = (props) => {
       {cartItem}
       <div className={classes.total}>
         <span>Total Amount</span>
-        <span>35.89</span>
+        <span>${cartTotalAMount}</span>
       </div>
       <div className={classes.actions}>
         <button className={classes['button--alt']} onClick={props.onClose}>Close</button>

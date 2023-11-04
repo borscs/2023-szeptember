@@ -6,6 +6,7 @@ import Cart from "./Components/Cart/Cart";
 function App() {
   const [cartIsShow, setCartIsShow] = useState(false);
   const [cart, setCart] = useState([]);
+  const [amount, setAmount] = useState(0);
   const hideCartHandler = () => {
     setCartIsShow(false);
   }
@@ -17,19 +18,45 @@ function App() {
     const itemId = cart.findIndex((item) => item.id === data.id);
 
     const itemData = cart[itemId];
-    if(itemData){
+    setAmount(amount + data.amount);
+    if (itemData) {
       cart[itemId] = {
         ...itemData,
-        amount: Number(itemData.amount) + Number(data.amount),
+        amount: itemData.amount + data.amount,
       };
-    }else {
+    } else {
       setCart([...cart, data]);
     }
   }
+
+  const RemoveCartHandler = (id) => {
+    setAmount(amount - 1);
+
+    const itemIndex = cart.findIndex((item) => item.id === id);
+    const itemData = cart[itemIndex];
+    console.log('ItemAMount',itemData.amount);
+    if (itemData.amount !== 1) {
+      cart[itemIndex] = {
+        ...itemData,
+        amount: itemData.amount - 1,
+      }
+
+    }
+    if (itemData.amount === 1) {
+      const cartHelper = cart.filter((item) => item.id !== id);
+      if (cartHelper) {
+        setCart(cartHelper);
+      } else {
+        setCart([]);
+      }
+    }
+  }
+
   return (
     <Fragment>
-      {cartIsShow && <Cart onClose={hideCartHandler} cart={cart}/> }
-      <Header onShowCart={openCartHandler}/>
+      {cartIsShow &&
+        <Cart onClose={hideCartHandler} cart={cart} setCart={setCartHandler} onRemove={RemoveCartHandler}/>}
+      <Header onShowCart={openCartHandler} amount={amount}/>
       <main>
         <Meals setCart={setCartHandler}/>
       </main>
