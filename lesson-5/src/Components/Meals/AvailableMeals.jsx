@@ -1,6 +1,8 @@
 import classes from "./AvailableMeals.module.css";
 import Card from "../../UI/Card";
 import MealItem from "./MealItem/MealItem";
+import {useContext} from "react";
+import CartContext from "../../Store/Cart-context";
 
 const DUMMY_MEALS = [
   {
@@ -30,10 +32,10 @@ const DUMMY_MEALS = [
 ];
 
 
-const AvailableMeals = (props) => {
-
+const AvailableMeals = () => {
+ const ctx = useContext(CartContext);
   const setCartHandler = (data) => {
-    props.setCart(data);
+   ctx.addItem(data);
   }
 
   const mealList = DUMMY_MEALS.map((meal) =>

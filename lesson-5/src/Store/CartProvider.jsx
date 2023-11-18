@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import {useReducer} from 'react';
 
 import CartContext from './Cart-context';
 
@@ -9,8 +9,42 @@ const defaultCartState = {
 
 const cartReducer = (state, action) => {
   if (action.type === 'ADD') {
-    const updatedItems = state.items.concat(action.item);
     const updatedTotalAmount = state.totalAmount + action.item.price * action.item.amount;
+    const itemId = state.items.findIndex((item) => item.id === action.item.id);
+    const item = state.items.find((item) => item.id === action.item.id);
+    let updatedItems;
+
+    if (item) {
+      const updatedItem = {
+        ...item,
+        amount: item.amount + action.item.amount,
+      }
+      updatedItems = [...state.items];
+      updatedItems[itemId] = updatedItem;
+    }else{
+      updatedItems = state.items.concat(action.item);
+    }
+
+    return {
+      items: updatedItems,
+      totalAmount: updatedTotalAmount
+    };
+
+  }else if(action.type === 'REMOVE'){
+    const itemId = state.items.findIndex((item) => item.id === action.id);
+    const item = state.items.find((item) => item.id === action.id);
+    const updatedTotalAmount = state.totalAmount - 1;
+
+    let updatedItems;
+
+    if(item.amount === 1){
+      updatedItems = state.items.filter(item => item.id !== action.id);
+    }else{
+      const updateItem = {...item, amount: item.amount - 1};
+      updatedItems = [...state.items];
+      updatedItems[itemId] = updateItem;
+    }
+
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount

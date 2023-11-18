@@ -3,11 +3,11 @@ import MealsSummary from "./MealsSummary";
 import AvailableMeals from "./AvailableMeals";
 
 
-const Meals = (props) => {
+const Meals = () => {
   return(
   <Fragment>
     <MealsSummary/>
-    <AvailableMeals setCart={props.setCart}/>
+    <AvailableMeals/>
   </Fragment>
   );
 };
